@@ -4,6 +4,14 @@ name: shell
 on:
   workflow_dispatch:
     inputs:
+      arch:
+        description: Architecture
+        required: true
+        type: choice
+        options:
+        - x86_64
+        - aarch64
+        default: x86_64
       release:
         description: 'OpenBSD release'
         required: true
@@ -24,6 +32,7 @@ jobs:
     - name: Starting a openbsd VM, please wait. It may take 3 minutes
       uses: vmactions/openbsd-vm@v1
       with:
+        arch: ${{ github.event.inputs.arch || 'x86_64' }}
         release: ${{ github.event.inputs.release || '7.6' }}
         nat: |
           "8000": "80"
